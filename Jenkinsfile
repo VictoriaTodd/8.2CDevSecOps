@@ -1,5 +1,9 @@
 pipeline {
     agent any
+    
+    environment {
+        NOTIFY_EMAIL = credentials('NOTIFY_EMAIL')
+    }
 
     stages {
         stage('Checkout') {
