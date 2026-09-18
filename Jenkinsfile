@@ -18,6 +18,16 @@ pipeline {
             steps {
                 sh 'npm test || true' // Allows pipeline to continue despite test failures
             }
+            post {
+                always {
+                    emailext (
+                        subject: "Test Stage - ${currentBuild.currentResult}: ${env.JOB_NAME} #${env.BUILD_NUMBER}",
+                        body: "The Run Tests stage completed with status: ${currentBuild.currentResult}.\n\nSee attached log for details.",
+                        to: "${env.NOTIFY_EMAIL}",
+                        attachLog: true
+                    )
+                }
+            }
         }
 
         stage('Generate Coverage Report') {
@@ -31,6 +41,17 @@ pipeline {
             steps {
                 sh 'npm audit || true' // This will show known CVEs in the output
             }
+            post {
+                always {
+                    emailext (
+                        subject: "Security Scan Stage - ${currentBuild.currentResult}: ${env.JOB_NAME} #${env.BUILD_NUMBER}",
+                        body: "The NPM Audit (Security Scan) stage completed with status: ${currentBuild.currentResult}.\n\nSee attached log for details.",
+                        to: "${env.NOTIFY_EMAIL}",
+                        attachLog: true
+                    )
+                }
+            }
+        }
         }
     }
 }
