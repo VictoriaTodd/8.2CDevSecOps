@@ -1,9 +1,5 @@
 pipeline {
     agent any
-    
-    environment {
-        NOTIFY_EMAIL = credentials('NOTIFY_EMAIL')
-    }
 
     stages {
         stage('Checkout') {
@@ -27,7 +23,7 @@ pipeline {
                     emailext (
                         subject: "Test Stage - ${currentBuild.currentResult}: ${env.JOB_NAME} #${env.BUILD_NUMBER}",
                         body: "The Run Tests stage completed with status: ${currentBuild.currentResult}.\n\nSee attached log for details.",
-                        to: "${env.NOTIFY_EMAIL}",
+                        to: 'victoria.e.todd.98@gmail.com',
                         attachLog: true
                     )
                 }
@@ -50,7 +46,7 @@ pipeline {
                     emailext (
                         subject: "Security Scan Stage - ${currentBuild.currentResult}: ${env.JOB_NAME} #${env.BUILD_NUMBER}",
                         body: "The NPM Audit (Security Scan) stage completed with status: ${currentBuild.currentResult}.\n\nSee attached log for details.",
-                        to: "${env.NOTIFY_EMAIL}",
+                        to: 'victoria.e.todd.98@gmail.com',
                         attachLog: true
                     )
                 }
